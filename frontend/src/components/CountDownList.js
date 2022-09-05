@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CountDownItem from "./CountDownItem";
-const CountDownList = (props) => {
-  const nowDateMiliseconds = new Date().getTime()
+const CountDownList = () => {
   const countDownDate = useSelector(
     (state) => state.countDownReducer.countDownDate
   );
@@ -25,7 +24,7 @@ useEffect(()=> {
   }
 },[])
   return newState.map((dateCount) => (
-    <CountDownItem key={dateCount.id} id={dateCount.id} dateCount={dateCount} />
+    <CountDownItem key={dateCount.id} id={dateCount.id}  />
   ));
 };
 

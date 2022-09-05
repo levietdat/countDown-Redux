@@ -1,54 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Button, Container } from "@mui/material";
-import { addCountDown, fetchCountDown } from "../redux/countDownSlice";
+import { addCountDown } from "../redux/countDownSlice";
 import { useDispatch } from "react-redux";
+import { countDownContext } from "../Context";
 const CountDownForm = (props) => {
+  const context = useContext(countDownContext)
   const nowDate = new Date();
   const dispatch = useDispatch();
   const handleChangeTitle = (e) => {
-    props.setTitle(e.target.value);
+    context.setTitle(e.target.value);
   };
   const handleAddCountDown = () => {
-    if (props.title !== "" && props.dateValue > nowDate) {
+    if (context.title !== "" && context.dateValue > nowDate) {
       dispatch(
         addCountDown({
-          dateCountDown: props.dateValue,
-          title: props.title,
+          dateCountDown: context.dateValue,
+          title: context.title,
         })
       );
-      props.setTitle("")
-      props.setDateValue(nowDate)
+      context.setTitle("")
+      context.setDateValue(nowDate)
       
     } else {
       alert("invalid date or title");
-      props.setDateCount({
-        title: "Đếm ngày....",
-        days: "00",
-        hours: "00",
-        minutes: "00",
-        seconds: "00",
-      });
     }
   };
   return (
     <Container maxWidth="sm">
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DateTimePicker
-          renderInput={(props) => <TextField {...props} />}
           label="CountDownDate"
-          onChange={(newValue) => props.setDateValue(newValue)}
-          value={props.dateValue}
+          value={context.dateValue}
+          onChange={(newValue) => context.setDateValue(newValue)}
+          renderInput={(context) => <TextField {...context} />}
         />
         <TextField
-          onChange={handleChangeTitle}
           style={{ marginLeft: "30px" }}
           id="outlined-basic"
           label="title"
           variant="outlined"
-          value={props.title}
+          value={context.title || ""}
+          onChange={handleChangeTitle}
+
         />
       </LocalizationProvider>
       <Button

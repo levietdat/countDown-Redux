@@ -1,17 +1,18 @@
 import { Button, ListItem, ListItemText } from "@mui/material";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useContext } from "react";
+import { countDownContext } from "../Context";
 
-const CountDownItem = (props) => {
+const CountDownItem = () => {
+  const context = useContext(countDownContext)
   const updateCountDownDate = ()=>{
-    props.setTitle(props.dateCount.title)
-    props.setDateValue(props.dateCount.featureDateMiliSeconds)
+    context.setTitle(context.dateCount.title)
+    context.setDateValue(context.dateCount.featureDateValue)
   }
   return (
-        <ListItem id={props.dateCount.id}>
+        <ListItem id={context.dateCount.id}>
         <ListItemText
-          primary = {`${props.dateCount.title?`${props.dateCount.title}`:'Số ngày còn lại'}`}
-          secondary={`${props.dateCount.days} days ${props.dateCount.hours} hours ${props.dateCount.minutes} minutes ${props.dateCount.seconds} seconds`}
+          primary = {`${context.dateCount.title?`${context.dateCount.title}`:'Số ngày còn lại'}`}
+          secondary={`${context.dateCount.days} days ${context.dateCount.hours} hours ${context.dateCount.minutes} minutes ${context.dateCount.seconds} seconds`}
         ></ListItemText>
         <Button
           onClick={updateCountDownDate}
